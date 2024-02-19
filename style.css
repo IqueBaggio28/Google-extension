@@ -131,7 +131,7 @@ button{
 
 }
 
-.btn{
+#btn{
     width: 120px;
     display: inline-block;
     font-weight: 600;
@@ -144,7 +144,7 @@ button{
     border-bottom: 4px solid var(--clr-slate500);
 }
 
-.btn:active{
+#btn:active{
     transform: translateY(4px);
     border: transparent;
 }
