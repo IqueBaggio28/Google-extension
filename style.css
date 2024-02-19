@@ -1,3 +1,14 @@
+:root{
+    --clr-dark: #0f0c0b;
+    --clr-slate800: #0d1b2a;
+    --clr-slate600: #1b263b;
+    --clr-slate500:  #364b63;
+    --clr-slate400: #415a77;
+    --clr-slate300: #778da9;
+    --clr-light: #e0e1dd;
+}
+
+
 *,
 ::before,
 ::after {
@@ -9,7 +20,9 @@
 }
 body{
     width: 500px;
-    aspect-ratio: 16/9;
+    max-height: calc((9/16) * 500px);
+    background-color: var(--clr-slate400);
+    color: var(--clr-light);
 }
 
 .content{
@@ -35,26 +48,22 @@ h1{
     gap: 1rem;
     flex: 2;
     height: 100%;
-    border-right: 1px solid black;
+    border-right: 1px solid var(--clr-slate800);
 
 }
 
 .timer{
-    border: 2px solid black;    
-    padding: 2.5rem 5rem;
+    border: 2px solid var(--clr-slate600);
+    padding: 1.5rem 3rem;
     border-radius: 1rem;
+    background-color: var(--clr-slate300);
 }
 .timer h2{
     font-size: 3rem;
 }
 
 
-.tasks{
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    height: 100%;
-}
+
 
 .buttons{
     position: relative;
@@ -68,20 +77,74 @@ h1{
 .tasks{
     display: flex;
     flex-direction: column;
+    flex: 1;
+    height: 100%;
 }
 
-.tasks{
-    max-height: calc(500/9);
-
+.tasks ul {
+    margin: 0px 0px 10px;
+    padding: 5px 20px;
+    /*border: .5px solid black;*/
+    border-radius: 10px;
+    list-style: none;
+    overflow-y: scroll;
+    height: 200px; /* or any other appropriate height */
 }
 
 .tasks li{
-    margin: 0px 0px 10px;
-    padding: 5px 20px;
-    border: .5px solid black;
+    background-color: var(--clr-slate500);
+    border: dotted 1px grey;
+    margin-bottom: 1rem;
     border-radius: 10px;
-    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: .7;
+}
 
-    overflow-y: scroll;
+.tasks li:hover{
+    opacity: 1;
+}
 
+
+.tasks ul::-webkit-scrollbar {
+    width: 10px; /* Width of the scrollbar */
+}
+
+.tasks ul::-webkit-scrollbar-track {
+    background: var(--clr-slate400); /* Color of the track */
+}
+
+.tasks ul::-webkit-scrollbar-thumb {
+    background-color: var(--clr-slate600); /* Color of the thumb */
+    border-radius: 5px; /* Rounded corners of the thumb */
+}
+
+
+button{
+    display: inline-block;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: inherit;
+
+}
+
+.btn{
+    width: 120px;
+    display: inline-block;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: -0.05em;
+    background-color: var(--clr-slate800);
+    color: var(--clr-light);
+    padding: .5em 1em;
+    border-radius: 6px;
+    border-bottom: 4px solid var(--clr-slate500);
+}
+
+.btn:active{
+    transform: translateY(4px);
+    border: transparent;
 }
