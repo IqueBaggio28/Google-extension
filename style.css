@@ -20,9 +20,7 @@
 }
 body{
     width: 500px;
-    max-height: calc((9/16) * 500px);
-    background-color: var(--clr-slate400);
-    color: var(--clr-light);
+    aspect-ratio: 16/9;
 }
 
 .content{
@@ -56,23 +54,7 @@ h1{
     border: 2px solid var(--clr-slate600);
     padding: 1.5rem 3rem;
     border-radius: 1rem;
-    background-color: var(--clr-slate300);
-    position: relative;
 }
-#increaseTime, #decreaseTime{
-    position: absolute;
-}
-
-#increaseTime{
-    right: 2rem;
-    top: 2rem;
-}
-
-#decreaseTime{
-    right: 2rem;
-    bottom: 2rem;
-}
-
 .timer h2{
     font-size: 3rem;
 }
@@ -105,99 +87,3 @@ h1{
     overflow-y: scroll;
     height: 200px; /* or any other appropriate height */
 }
-
-.tasks li{
-    background-color: var(--clr-slate500);
-    border: dotted 1px grey;
-    padding: .5rem;
-    margin-bottom: 1rem;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: .7;
-    position: relative;
-}
-
-
-
-.tasks li:hover{
-    opacity: 1;
-}
-
-input[type="text"] {
-    background-color: var(--clr-slate500);
-    border: none; /* Remove the border */
-    outline: none; /* Remove the outline */
-    color: var(--clr-dark);
-        }
-
-
-
-
-
-.tasks ul::-webkit-scrollbar {
-    width: 10px; /* Width of the scrollbar */
-}
-
-.tasks ul::-webkit-scrollbar-track {
-    background: var(--clr-slate400); /* Color of the track */
-}
-
-.tasks ul::-webkit-scrollbar-thumb {
-    background-color: var(--clr-slate600); /* Color of the thumb */
-    border-radius: 5px; /* Rounded corners of the thumb */
-}
-
-button{
-    display: inline-block;
-    padding: 0;
-    border: none;
-    background: none;
-    cursor: pointer;
-    color: inherit;
-
-}
-
-#btn{
-    width: 120px;
-    display: inline-block;
-    font-weight: 600;
-    text-decoration: none;
-    letter-spacing: -0.05em;
-    background-color: var(--clr-slate800);
-    color: var(--clr-light);
-    padding: .5em 1em;
-    border-radius: 6px;
-    border-bottom: 4px solid var(--clr-slate500);
-    transition: all 0.1s ease-in;
-}
-
-#btn:active{
-    transform: translateY(4px);
-    border: transparent;
-}
-#task-check {
-    position: absolute;
-    left: 10px;
-    display: none;
-    border-radius: 50%;
-}
-
-#task-check:hover{
-    color: lightgreen;
-
-}
-
-.delete-button {
-    margin: 0;
-    color: white;
-    border: none;
-    border-radius: 5px;
-}
-
-
-.delete-button:hover{
-    color: red;
-}
-
