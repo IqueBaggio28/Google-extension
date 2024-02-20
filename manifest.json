@@ -7,6 +7,9 @@
     "default_popup": "index.html",
     "default_icon": "Pomodoro.png"
   },
+  "background": {
+    "scripts": ["popup.js"]
+  },
   "web_accessible_resources": [
     {
       "matches": ["<all_urls>"],
