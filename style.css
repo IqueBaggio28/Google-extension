@@ -177,27 +177,72 @@ button{
     transform: translateY(4px);
     border: transparent;
 }
-#task-check {
-    position: absolute;
-    left: 10px;
-    display: none;
-    border-radius: 50%;
-}
 
-#task-check:hover{
-    color: lightgreen;
 
-}
 
 .delete-button {
     margin: 0;
     color: white;
     border: none;
     border-radius: 5px;
+    position: relative;
+    left: 15px;
 }
 
 
 .delete-button:hover{
     color: red;
 }
+
+.check{
+    width: 20px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1.5px solid var(--clr-light);
+    position: absolute;
+    left: 07px;
+    display: none;
+    margin-right: 20px;
+}
+
+.check:hover{
+    color: lightgreen;
+
+}
+
+.check::after, .check::before{
+    content: "";
+    background-color: var(--clr-light);
+    position: absolute;
+    border-radius: 10rem;
+}
+
+.check::after{
+
+    width: 8px;
+    height: 1.5px;
+    top:33%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    rotate: -45deg;
+}
+.check::before{
+    width: 5px;
+    height: 1.5px;
+    top:66%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    rotate: 45deg;
+
+}
+
+input[type="text"] {
+    position: relative;
+    left: 10px;
+  }
+.task-input {
+    max-width: 150px;
+    word-wrap: break-word;
+}
+
 
