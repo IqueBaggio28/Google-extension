@@ -54,7 +54,7 @@ increase.addEventListener('click',function () {
 decrease.addEventListener('click',function () {
     if(!running && timeSeconds !== 0 && !paused) {
         timeSeconds -= 300;
-        if(timeSeconds < 0){
+        if(timeSeconds < 300){
             timeSeconds +=300;
         }
         displayTime(timeSeconds);
