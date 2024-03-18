@@ -1,59 +1,52 @@
-const timeH = document.getElementById('clock');
-const start = document.getElementById('btn');
-const increase = document.getElementById('increaseTime');
-const decrease = document.getElementById('decreaseTime');
-const reset = document.getElementById('reset');
+console.log("background running");
+
+loadTimerState();
 
 let mode = "work";
-let time = 1500;
+let time = 15;
 let timeSeconds = time;
 let countDown = null;
 let cycle = 0;
 let running = false;
 let paused = false;
 
-displayTime(timeSeconds); // display the initial time
+
+// Send initial timer display data when requested by popup
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    if (message.action === "request_initial_timer_display") {
+        sendMessageToPopup("update_timer_display", {
+            minutes: Math.floor(timeSeconds / 60),
+            seconds: timeSeconds % 60
+        });
+    }
+});
+
 
 
 
 //Functions
 //------------------------------------------------------------------------------------------
 
-/**
- * Function that will display the time remaining
- * */
-function displayTime(seconds){
-    const min = Math.floor(seconds / 60); // get minutes
-    const sec = Math.floor(seconds % 60); // get seconds
-    timeH.innerHTML = `${min < 10? '0':''}${min}:${sec < 10? '0':''}${sec}`;
-
-}
-
-/**
- * Function to display a notification
- */
-function showNotification() {
-    const options = {
-        type: 'basic',
-        title: 'Timer Finished',
-        message: 'The timer has finished.',
-        iconUrl: 'icon.png'
-    };
-    chrome.notifications.create(options);
-}
-
-/**
- * Function that will start the timer
- * */
 function startTimer(){
+
     countDown = setInterval(()=>{
         timeSeconds--;
-        displayTime(timeSeconds);
+        sendMessageToPopup("update_timer_display", {
+            minutes: Math.floor(timeSeconds / 60),
+            seconds: timeSeconds % 60
+        });
         if(timeSeconds === 0){
             clearInterval(countDown);
             switchMode();
-            showNotification();
+
+
+
         }
+        sendMessageToPopup("update_timer_display", {
+            minutes: Math.floor(timeSeconds / 60),
+            seconds: timeSeconds % 60
+        });
+
     },1000)
 }
 
@@ -79,94 +72,112 @@ function switchMode(){
         mode = 'shortBreak';
         timeSeconds = time * 0.2;
     }
-    displayTime(timeSeconds);
-    start.innerHTML = "Start";
+    sendMessageToPopup("update_timer_display", {
+        minutes: Math.floor(timeSeconds / 60),
+        seconds: timeSeconds % 60
+    });
+    sendMessageToPopup("update_button",{text: 'Start'});
+    showNotification("Pomodoro Timer", "Time is up!");
+    saveTimerState();
 }
 
-// Save timer state to chrome storage
+function showNotification(title, message) {
+  chrome.notifications.create(
+    null,
+    {
+        type: "basic",
+        iconUrl: "Pomodoro.png",
+        title: title,
+        message:message,
+
+    },
+  );
+  playSound();
+}
+function playSound() {
+    chrome.runtime.sendMessage({ action: "play_sound",media: "achive-sound-132273.mp3" });
+}
+
+function sendMessageToPopup(action, data) {
+    chrome.runtime.sendMessage({ action: action, ...data });
+}
+
+// Function to save timer state to storage
 function saveTimerState() {
     chrome.storage.local.set({
-        mode,
-        time,
-        timeSeconds,
-        cycle,
-        running,
-        paused
+        mode: mode,
+        timeSeconds: timeSeconds,
+        cycle: cycle,
+        running: running,
+        paused: paused
     });
 }
 
-// Load timer state from chrome storage
+// Function to load timer state from storage
 function loadTimerState() {
-    chrome.storage.local.get(['mode', 'time', 'timeSeconds', 'cycle', 'running', 'paused'], function(result) {
-        mode = result.mode || mode;
-        time = result.time || time;
-        timeSeconds = result.timeSeconds || timeSeconds;
-        cycle = result.cycle || cycle;
-        running = result.running || running;
-        paused = result.paused || paused;
-        displayTime(timeSeconds);
-        if (running && !paused) {
-            startTimer();
-        }
+    chrome.storage.local.get(['mode', 'timeSeconds', 'cycle', 'running', 'paused'], function(result) {
+        mode = result.mode || "work";
+        timeSeconds = result.timeSeconds || 15;
+        cycle = result.cycle || 0;
+        running = result.running || false;
+        paused = result.paused || false;
     });
 }
-
 // Buttons
 // ----------------------------------------------------------------------------
 
-start.addEventListener('click', function() {
-    if (running) {
-        clearInterval(countDown);
-        start.innerHTML = 'Start';
-        paused = true;
-        running = false;
 
-    } else {
+
+chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
+    if(message.action === "start_timer"){
         startTimer();
-        start.innerHTML = "Pause";
         running = true;
         paused = false;
-
     }
-});
-
-increase.addEventListener('click',function () {
-    if(!running && !paused) {
-        timeSeconds += 300;
-        time += 300;
-        if(timeSeconds > 3000){
-            timeSeconds -=300;
+    else if(message.action === "pause_timer"){
+        clearInterval(countDown);
+        paused = true;
+        running = false;
+    }
+    else if(message.action === "increase"){
+        if (!running && !paused) {
+            timeSeconds += 300;
+            time += 300;
+            if (timeSeconds > 3300) {
+                timeSeconds -= 300;
+                time -= 300;
+            }
+        sendMessageToPopup("update_timer_display", {
+            minutes: Math.floor(timeSeconds / 60),
+            seconds: timeSeconds % 60
+        });
+        }
+    }
+    else if(message.action === "decrease"){
+        if (!running && timeSeconds !== 0 && !paused) {
+            timeSeconds -= 300;
             time -= 300;
+            if (timeSeconds < 300) {
+                timeSeconds += 300;
+                time += 300;
+            }
+        sendMessageToPopup("update_timer_display", {
+            minutes: Math.floor(timeSeconds / 60),
+            seconds: timeSeconds % 60
+        });
         }
-        displayTime(timeSeconds);
+    }
+    else if(message.action === "reset_timer"){
+        clearInterval(countDown);
+        timeSeconds = time;
+        mode = 'work';
+        sendMessageToPopup("update_timer_display", {
+            minutes: Math.floor(timeSeconds / 60),
+            seconds: timeSeconds % 60
+        });
+        cycle = 0;
+        running = false;
+        paused = false;
     }
 })
-decrease.addEventListener('click',function () {
-    if(!running && timeSeconds !== 0 && !paused) {
-        timeSeconds -= 300;
-        time -= 300;
-        if(timeSeconds < 300){
-            timeSeconds +=300;
-            time +=300;
-        }
-        displayTime(timeSeconds);
-    }
-})
-
-reset.addEventListener('click',function(){
-    clearInterval(countDown);
-    timeSeconds = time;
-    mode = 'work';
-    start.innerHTML = "Start";
-    displayTime(timeSeconds);
-    cycle = 0;
-    running = false;
-    paused = false;
-})
-
-// Load timer state when the popup is opened
-document.addEventListener('DOMContentLoaded', loadTimerState);
-
-// Save timer state when the popup is closed
-window.addEventListener('beforeunload', saveTimerState);
 
