@@ -25,6 +25,13 @@ body{
     color: var(--clr-light);
 }
 
+.title{
+    display: flex;
+    justify-content: center;
+
+}
+
+
 .content{
     display: grid;
     grid-template-columns:1fr 1fr;
@@ -58,6 +65,8 @@ h1{
     border-radius: 1rem;
     background-color: var(--clr-slate300);
     position: relative;
+    max-width: 235.21px;
+    min-width: 235.21px;
 }
 #increaseTime, #decreaseTime{
     position: absolute;
