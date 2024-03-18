@@ -7,8 +7,9 @@
     "default_popup": "index.html",
     "default_icon": "Pomodoro.png"
   },
+  "permissions": ["storage","notifications","activeTab"],
   "background": {
-    "scripts": ["popup.js"]
+    "service_worker": "background.js"
   },
   "web_accessible_resources": [
     {
