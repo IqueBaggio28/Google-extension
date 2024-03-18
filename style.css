@@ -94,8 +94,31 @@ h1{
     height: 100%;
 }
 
-.buttons button{
+#reset{
+    position: absolute;
+    padding: .5rem;
+    margin-left: 1rem;
+}
+
+#reset:hover{
+    color: grey;
+}
+
+#btn{
     margin: auto;
+}
+
+@keyframes rotate360 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate {
+  animation: rotate360 1s ease-out;
 }
 
 .tasks{
